@@ -52,9 +52,11 @@ jobs:
         # dingtalk webhook
         webhook: ${{ secrets.Dingbot_WeHook }}
         # dingtalk message type
-        # msgtype: # optional, default is text
+        msgtype: markdown # optional, default is text
         # content for dingtalk message in JSON format
-        content: "【GitHub】NAV Actions run finished. "
+        content: |
+          ## 【GitHub Tips】
+          >NAV Actions run finished. 
         # at users in JSON format
         # at: # optional, default is {}
         # secret used for signing
