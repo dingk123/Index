@@ -33,14 +33,14 @@ jobs:
       run: |
         cd generator
         python generator.py
-		
+
     - name: commit
       run: |
         git config --global user.email dingk123@gmail.com
         git config --global user.name dingk123
         git add .
         git commit -m "update" -a
-		
+
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
