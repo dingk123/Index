@@ -243,12 +243,6 @@
             "disc": "iOS/macOS 应用搜索",
             "img": "fnd.webp"
         },
-        "Firefox Add-ons": {
-            "url": "https://addons.mozilla.org",
-            "name": "Firefox Add-ons",
-            "disc": "Firefox 附加组件",
-            "img": "firefox.webp"
-        },
         "Chrome Web Store": {
             "url": "https://chrome.google.com/webstore/category/extensions",
             "name": "Chrome Web Store",
