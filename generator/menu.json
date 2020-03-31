@@ -1,6 +1,9 @@
 {
     "常用推荐": {
         "icon": "linecons-star"
+    },    
+    "常用工具": {
+        "icon": "linecons-cog"
     },
     "搜索引擎": {
         "icon": "linecons-search"

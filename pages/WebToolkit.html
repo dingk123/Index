@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>AV Web Tool</title>
+
+</head>
+<body>
+
+
+    <div class="row" style="background-color: #e5eecc;">
+        <div class="panel panel-default" style="margin-bottom:0;">
+
+
+            <div class="panel-body" style="background-color: #e5eecc;border-color: #e5eecc;">
+                <form autocomplete="off" role="form" name="form1">
+
+                    <div class="row">
+                        <div class="col-sm-6" id="LeftPane">
+                            <div class="row-fluid">
+                                <label class="inline"><strong style="font-size: 16px;color:#617f10;"> Input:</strong></label>
+                                <div style="position:absolute;left:630px;top:30px;">
+                                    <!-- &#10 代表换行
+                                    显示结果	描述	实体名称	实体编号
+                                                空格	&nbsp;	    &#160;
+                                        <	    小于号	&lt;	    &#60;
+                                        >	    大于号	&gt;	    &#62;
+                                        &	    和号	&amp;	    &#38;
+                                        "	    引号	&quot;	    &#34;
+                                        '	    撇号	&apos; 		(IE不支持)	&#39;-->
+                                    <input onclick="Lower()" type="button" class="pull-right inline" value="大写转小写&#187;" title="Input :abc&#10;Output:ABC" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="Upper()" type="button" class="pull-right inline" value="小写转大写&#187;" title="Input :ABC&#10;Output:abc" style="width:100px;height:20px;font-size:10px">
+                                    
+                                    <input onclick="DeBase64()" type="button" class="pull-right inline" value="DeBase64&#187;" title="Input :dGVzdA==&#10;Output:test" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="EnBase64()" type="button" class="pull-right inline" value="EnBase64&#187;" title="Input :test&#10;Output:dGVzdA==" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="showsha1()" type="button" class="pull-right inline" value="字符串Sha1" title="Input :  Downloader.pdb&#10;Output:4e06b25cb1e18284df3731fb71666a7951622380" style="width:100px;height:20px;font-size:10px">
+                                </div>
+                                <div style="position:absolute;left:630px;top:60px;">
+                                    <input onclick="char2Value()" type="button" class="pull-right inline" value="字符转数值&#187;" title="Input :Test&#10;Output:&#10;Hex:54 65 73 73 74&#10;   \x54\x65\x73\x73\x74&#10;Dec:84 101 115 115 116" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="hex2Char()" type="button" class="pull-right inline" value="Hex转ASCII&#187;" title="Input :54657374 or&#10;    54 65 73 74 or&#10;    \x54\x65\x73\x74 or&#10;    54 00 65 00 73 00 74&#10;Output:Test" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="dec2Char()" type="button" class="pull-right inline" value="十进制转字符&#187;" title="Input :84 101 115 116&#10;Output:Test" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="decodeURL()" type="button" class="pull-right inline" value="ASCII转URL&#187;" title="Input :www.google.com/search?q=%E7%97%85%E6%AF%92&#10;Output:www.google.com/search?q=病毒" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="encodeURL()" type="button" class="pull-right inline" value="URL转ASCII&#187;" title="Input :www.google.com/search?q=病毒&#10;Output:www.google.com/search?q=%E7%97%85%E6%AF%92" style="width:100px;height:20px;font-size:10px">
+                                </div>
+                                <div style="position:absolute;left:630px;top:90px;">
+                                    <input onclick="quotTransfer()" type="button" class="pull-right inline" value="\&&quot;转义&#187;" title="Input : &quot;C:\Program Files\Microsoft\&quot;&#10;Output: \&quot;C:\\Program Files\\Microsoft\\\&quot;" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="LuaTransfer()" type="button" class="pull-right inline" value="LUA字符转义&#187;" title="Input : &quot;c:\test-test.exe&quot;&#10;Output: \&quot;c:\\test%-test%.exe&quot;" style="width:100px;height:20px;font-size:10px">
+                                </div>
+                                <div style="position:absolute;left:630px;top:150px;">
+                                    <input onclick="openVT()" type="button" class="pull-right inline" value="VT打开&#187" title="支持Sha256/Sha1/MD5搜索" style="width:100px;height:20px;font-size:10px">
+                                    <!-- <input onclick="openVTI()" type="button" class="pull-right inline" value="VTI打开&#187" title="支持Sha256/Sha1/MD5搜索，会消耗次数" style="width:100px;height:20px;font-size:10px"> -->
+                                </div>
+                                <div style="position:absolute;left:630px;top:180px;">
+                                    <input onclick="hstrIDA()" type="button" class="pull-right inline" value="HSTR_IDA&#187;" title="把IDA/OD上的code转换为\xXX\xXX格式" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="hstrDnSpy()" type="button" class="pull-right inline" value="HSTR_DnSpy&#187;" title="把DnSpy上的code转换为\xXX\xXX格式" style="width:100px;height:20px;font-size:10px">
+                                    <input onclick="hstrFromHex()" type="button" class="pull-right inline" value="HSTR_Hex&#187;" title="把E847或E8 47转换为\xXX\xXX格式，支持??" style="width:100px;height:20px;font-size:10px">
+                                </div>
+                            </div>
+                            <textarea class="form-control" id="input" name="input" title="请输入英文字符串，如: abc" style="width:600px;height:280px;font-size:10px"></textarea>
+
+                        </div>
+
+                        <div class="col-sm-6" id="RightPane">
+                            <div class="row-fluid">
+                                <label class="inline"><strong style="font-size: 16px;color:#617f10;"> Output:</strong></label>
+                            </div>
+                            <textarea class="form-control" id="output" name="output" style="width:600px;height:280px;font-size:10px"></textarea>
+
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function Lower() {
+            <!-- var input = document.getElementById("input").value; -->
+            <!-- console.log("Input is : "+ input); -->
+            <!-- <!-- console.log("Input is : "+document.form1.input.value); --> -->
+
+            var output = document.form1.input.value.toLowerCase();
+            <!-- console.log("Output is : "+ output); -->
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+
+            <!-- window.clipboardData.setData(output, clipBoardContent); -->
+            }
+
+        function Upper() {
+            var output = document.form1.input.value.toUpperCase();
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function quotTransfer() {
+            // "C:\Program Files\Microsoft\"	-->  \"C:\\Program Files\\Microsoft\\\"
+            // var output = window.btoa(document.getElementById("input").value);
+            // var input =  "\"C:\\Program Files\\Microsoft\\\""
+            var output = document.getElementById("input").value.replace(/\\/g, "\\\\").replace(/\"/g, "\\\"");
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+        
+        function DeBase64() {
+            try
+            {
+                var output = window.atob(document.getElementById("input").value);	// Base64
+
+                x=document.getElementById("output");  // 找到元素
+                x.innerHTML = output;    // 改变内容
+
+                x.select();
+                document.execCommand("Copy"); // 执行浏览器复制命令
+            }
+            catch(err)
+            {
+                txt="There was an error on this page.\n\n";
+                txt+="Error description: " + err.message + "\n\n";
+                txt+="Continue use it after refresh (F5 or Ctrl+R).\n\n";
+                alert(txt);
+            }
+            
+        }
+
+        function EnBase64() {
+            var output = window.btoa(document.getElementById("input").value);	// Base64
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+        
+        function char2Value() {
+            // Test	-->  Hex:54 65 73 73 74  \x54\x65\x73\x73\x74  Dec:84 101 115 115 116
+            var input =  document.getElementById("input").value;
+            var hex1  = ""
+            var hex2  = ""
+            var dec   = ""
+            for (var i=0; i<input.length; i++)
+            {
+                dec  = dec  + " "   + input.charCodeAt(i);
+                hex1 = hex1 + " "   + input.charCodeAt(i).toString(16);
+                hex2 = hex2 + "\\x" + input.charCodeAt(i).toString(16);
+            }
+            var output = "Hex1: " + hex1 + "&#10;Hex2:" + hex2 + "&#10;Dec: " + dec;
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function dec2Char() {
+            // 84 101 115 116 -->  Test
+            var input =  document.getElementById("input").value.split(" ");
+
+            var output = "";
+            for(x in input){output = output + String.fromCharCode(input[x]);}
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function hex2Char() {
+            // 54657374	              -->  Test
+            // 54 65 73 74	          -->  Test
+            //\x54\x65\x73\x74	      -->  Test
+            // 54 00 65 00 73 00 74	  -->  Test
+            var input =  document.getElementById("input").value.split("\n");
+            var output = "";
+
+            for(i in input){
+                input[i] = input[i].trim().toLowerCase().replace(/\\x/g, "").replace(/ /g, "");
+                console.log("Input: " + input[i]);
+                console.log(input[i].length);
+
+                var string  = "";
+                var symbols = " !\"#$%&'()*+,-./0123456789:;<=>?@";
+                var loAZ = "abcdefghijklmnopqrstuvwxyz";
+                symbols+= loAZ.toUpperCase();
+                symbols+= "[\\]^_`";
+                symbols+= loAZ;
+                symbols+= "{|}~";
+
+                var hex = "0123456789abcdef";
+                for( j=0; j<(input[i]).length; j=j+2 )
+                {
+                    var char1 = input[i].charAt(j);
+                    var char2 = input[i].charAt(j+1);
+                    var num1 = hex.indexOf(char1);
+                    var num2 = hex.indexOf(char2);
+                    var value = num1 << 4;
+                    value = value | num2;
+
+                    if(value!=0)
+                    {
+                        var valueInt = parseInt(value);
+                        var symbolIndex = valueInt - 32;
+                        var ch = '?';
+                        if ( symbolIndex >= 0 && value <= 126 )
+                        {
+                            ch = symbols.charAt(symbolIndex)
+                        }
+                        string += ch;
+                    }
+                }
+                output = output + string + "\r\n";
+            }
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function encodeURL() {
+            var output = encodeURI(document.form1.input.value);
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function decodeURL() {
+            var output = decodeURI(document.form1.input.value);
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function openVT() {
+            // https://www.virustotal.com/#/file/1c67c1b51acb95326662f192efce7c15ed4a0f2b779c1f33443d048bae1b09c2/details
+            var input =  document.getElementById("input").value.split("\n");
+
+            for(i in input){
+                input[i] = input[i].trim();
+                console.log("Input: " + input[i]);
+                if(input[i].search(/^[0-9a-f]{64}$/i) != -1 || input[i].search(/^[0-9a-f]{40}$/i) != -1 || input[i].search(/^[0-9a-f]{32}$/i) != -1)  // 'i' for ignore Upper/Lower case
+                {
+                    console.log("MD5, SHA1 or SHA256: " + input[i]);
+                    window.open("https://www.virustotal.com/#/file/" + input[i], "");
+                }
+                else if(input[i] == "")     continue;
+                    // else if(input[i].length > 3 && input[i].search(/\r\n/) != -1)
+                else
+                {
+                    console.log("Error: " + input[i]);
+                    x=document.getElementById("output");  // 找到元素
+                    x.innerHTML = "Error: Current string is \""+ input[i] + "\"!";    // 改变内容
+                    return false;
+                }
+            }
+
+            //x=document.getElementById("output");  // 找到元素
+            //x.innerHTML = output;    // 改变内容
+        }
+
+        function openSpynet() {
+            //var a = document.createElement("a");
+            //a.setAttribute("href", "http://www.baidu.com");
+            //a.setAttribute("target", "_blank");
+            //a.setAttribute("id", "camnpr");
+            //document.body.appendChild(a);
+            //a.click();
+
+            // window.open("http://www.baidu.com");
+            // window.open("http://www.baidu.com", "");
+
+            var input =  document.getElementById("input").value.split("\n");
+
+            for(i in input){
+                input[i] = input[i].trim();
+                console.log("Input: " + input[i]);
+                if(input[i].search(/^[0-9a-f]{40}$/i) != -1)
+                {
+                    console.log("SHA1: " + input[i]);
+                    window.open("http://http://spynet/File/FileInstance.aspx?SHA1=" + input[i], "");
+                }
+                    // else if(input[i].search(/^\w{32}$/) != -1)
+                    // {
+                    //     console.log("MD5: " + input[i]);
+                    //     window.open("http://http://spynet/File/FileInstance.aspx?SHA1=" + input[i], "");
+                    // }
+                else if(input[i].search(/^[0-9a-f]{16}$/i) != -1)
+                {
+                    window.open("http://spynet/Sos/SosInstance.aspx?SigSeq=" + input[i], "");
+                }
+                else if(input[i].search(/^0x[0-9a-f]{16}$/i) != -1)
+                {
+                    // http://spynet/Sos/SosInstance.aspx?SigSeq=0000517808da41bf Spynet不支持前面0x0000517808da41bf格式
+                    window.open("http://spynet/Sos/SosInstance.aspx?SigSeq=" + input[i].substring(3), "");
+                }
+                else if(input[i] == "")     continue;
+                    // else if(input[i].length > 3 && input[i].search(/^[\w\:\/\.\!]+$/) != -1)
+                    // {
+                    //     // window.open("https://flight.rs.microsoft.com/Search?param=" + input[i], "");
+                    //     window.open("https://flight.rs.microsoft.com/Search?param=" + encodeURI(input[i]), "");
+                    // }
+                else
+                {
+                    console.log("Error: " + input[i]);
+                    x=document.getElementById("output");  // 找到元素
+                    x.innerHTML = "Error: Current string is \""+ input[i] + "\"!";    // 改变内容
+                    return false;
+                }
+            }
+        }
+
+        function rsThreat() {
+            // Todo: rsThreat
+            alert("正在施工中，即将开放，敬请期待！");
+        }
+
+        function snThreat() {            
+            // Todo: snThreat
+            alert("正在施工中，即将开放，敬请期待！");
+        }        
+
+        function hstrIDA() {
+            //.text:00401E47
+            //.text:00401E47                                     loc_401E47:                             ; CODE XREF: sub_401B20+2FFj
+            //.text:00401E47 83 7D 90 00                                         cmp     [ebp+var_70], 0
+            //.text:00401E4B 74 34                                               jz      short loc_401E81
+            //.text:00401E4D 68 5C 41 40 00                                      push    offset aCmdXpayWho ; "cmd=xpay&who="
+            //.text:00401E52 8D 85 90 F7 FF FF                                   lea     eax, [ebp+String1]
+            //.text:00401E58 50                                                  push    eax             ; lpString1
+            //.text:00401E59 FF 15 58 60 40 00                                   call    ds:lstrcpyA
+            //.text:00401E5F A1 FC 52 40 00                                      mov     eax, lpString2
+            //.text:00401E64 50                                                  push    eax             ; lpString2
+            //.text:00401E65 8D 8D 90 F7 FF FF                                   lea     ecx, [ebp+String1]
+            //.text:00401E6B 51                                                  push    ecx             ; lpString1
+            //.text:00401E6C FF 15 3C 60 40 00                                   call    ds:lstrcatA
+            //.text:00401E72 8D 85 90 F7 FF FF                                   lea     eax, [ebp+String1]
+            //.text:00401E78 50                                                  push    eax             ; lpString
+            //.text:00401E79 E8 8C F1 FF FF                                      call    sub_40100A
+            //.text:00401E7E 83 C4 04                                            add     esp, 4
+            // s"\x83\x7D\x90\x00\x74\x34\x68\x5C\x41\x40\x00\x8D\x85\x90\xF7\xFF\xFF\x50\xFF\x15\x58\x60\x40\x00\xA1\xFC\x52\x40\x00\x50\x8D\x8D\x90\xF7\xFF\xFF\x51\xFF\x15\x3C\x60\x40\x00\x8D\x85\x90\xF7\xFF\xFF\x50\xE8\x8C\xF1\xFF\xFF\x83\xC4\x04"
+
+            //.text:00401E47
+            //.text:00401E47                                     loc_401E47:                             ; CODE XREF: sub_401B20+2FFj
+            //.text:00401E47 83 7D 90 00                                         cmp     [ebp+var_70], 0
+            //.text:00401E4B 74 34                                               jz      short loc_401E81
+            //.text:00401E4D 68 5C 41 40 00                                      push    offset aCmdXpayWho ; "cmd=xpay&who="
+            //.text:00401E52 8D 85 90 F7 ?? ??                                   lea     eax, [ebp+String1]
+            //.text:00401E58 ??                                                  push    eax             ; lpString1
+            //.text:00401E59 FF 15 58 60 40 00                                   call    ds:lstrcpyA
+            //.text:00401E5F A1 FC 52 40 00                                      mov     eax, lpString2
+            //.text:00401E64 50                                                  push    eax             ; lpString2
+            //.text:00401E65 8D 8D 90 F7 FF FF                                   lea     ecx, [ebp+String1]
+            //.text:00401E6B 51                                                  push    ecx             ; lpString1
+            //.text:00401E6C FF 15 3C 60 40 00                                   call    ds:lstrcatA
+            //.text:00401E72 8D 85 90 F7 FF FF                                   lea     eax, [ebp+String1]
+            //.text:00401E78 50                                                  push    eax             ; lpString
+            //.text:00401E79 E8 8C F1 FF FF                                      call    sub_40100A
+            //.text:00401E7E 83 C4 04                                            add     esp, 4
+            // ws"\x83\x7D\x90\x00\x74\x34\x68\x5C\x41\x40\x00\x8D\x85\x90\xF7\x90\x01\x03\xFF\x15\x58\x60\x40\x00\xA1\xFC\x52\x40\x00\x50\x8D\x8D\x90\xF7\xFF\xFF\x51\xFF\x15\x3C\x60\x40\x00\x8D\x85\x90\xF7\xFF\xFF\x50\xE8\x8C\xF1\xFF\xFF\x83\xC4\x04\x90\x00"
+
+
+            //      loc_1E1:                                // CODE XREF: RView.Program__Main+157j
+            //72 50 05 00 70                          ldstr    aGenerated0ByCa            // "Generated {0} by calling {1} in {2}."
+            //11 0C                                   ldloc.s  0xC
+            //09                                      ldloc.3
+            //08                                      ldloc.2
+            //28 25 00 00 0A                          call     string [mscorlib]System.String::Format(string, object, object, object)
+            //28 10 00 00 0A                          call     void [mscorlib]System.Console::WriteLine(string)
+            //2A                                      ret
+            // s"\x72\x50\x05\x00\x70\x11\x0C\x09\x08\x28\x25\x00\x00\x0A\x28\x10\x00\x00\x0A\x2A"
+
+            //      loc_1E1:                                // CODE XREF: RView.Program__Main+157j
+            //72 50 05 00 70                          ldstr    aGenerated0ByCa            // "Generated {0} by calling {1} in {2}."
+            //11 0C                                   ldloc.s  0xC
+            //09                                      ldloc.3
+            //??                                      ldloc.2
+            //?? 25 00 00 0A                          call     string [mscorlib]System.String::Format(string, object, object, object)
+            //28 10 00 00 0A                          call     void [mscorlib]System.Console::WriteLine(string)
+            //2A
+            // ws"\x72\x50\x05\x00\x70\x11\x0C\x09\x90\x01\x02\x25\x00\x00\x0A\x28\x10\x00\x00\x0A\x2A\x90\x00"
+            var input =  document.getElementById("input").value.split("\n");
+            console.log(input);
+
+            var comments = "";
+            var string = "s\"";
+            var output = "";
+            var cnt = 0;
+            for(i in input){
+                input[i] = input[i].trimLeft().replace(/\/\//, "");
+                console.log(input[i]);
+                if(!input[i].startsWith("//")) comments = comments + "//" + input[i] + "\r\n";
+                else comments = comments + input[i] + "\r\n";
+
+                var PCodes = input[i].split(" "); // 用空白分割原始字符串为数组
+                for(j in PCodes){
+
+                    // 根据不同的PCode内容来处理数组中的元素，非PCode跳过
+                    if(PCodes[j].search(/[A-Z0-9]{4,}/) != -1)
+                    {
+                        console.log("00: " + PCodes[j].search(/[A-Z0-9]{4,}/));
+                        console.log("0: " + PCodes[j]);
+                        continue;
+                    }
+                    else if(PCodes[j] == "??")
+                    {
+                        console.log("1: " + PCodes[j]);
+                        cnt = cnt+1;
+                        continue;
+                    }
+                    else if(PCodes[j] == "")
+                    {
+                        console.log("2: " + PCodes[j]);
+                        break;
+                    }
+                    else if(PCodes[j].search(/^[A-Z0-9]{2}$/)!=-1 && cnt == 0)
+                    {
+                        string = string + "\\x" + PCodes[j];
+
+                        console.log("3: " + PCodes[j]);
+                    }
+                    else if(PCodes[j].search(/^[A-Z0-9]{2}$/) != -1)
+                    {
+                        if(!string.startsWith("ws")) string = "w" + string;
+
+                        if(cnt < 10) string = string + "\\x90\\x01\\x0" + cnt + "\\x" + PCodes[j];
+                        else         string = string + "\\x90\\x01\\x"  + cnt + "\\x" + PCodes[j];
+                        cnt = 0;
+                        console.log("4: " + PCodes[j]);
+                    }
+                    else
+                    {
+                        console.log("Error: " + PCodes[j]);
+                        x=document.getElementById("output");  // 找到元素
+                        x.innerHTML = "Error: Current string is \""+ PCodes[j] + "\"!";    // 改变内容
+                        return false;
+                    }
+                }
+            }
+            if(string.startsWith("ws")) string = string + "\\x90\\x00\"";
+            else string = string + "\"";
+
+            output = comments + string;
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function LuaTransfer() {
+            // LUA 转义，比普通转义增加{.^$()%.[]*+-?}，以及‘“，其他的待补充
+            // ^123.456(7),%100,[0],*,+,_,?,$
+            // ^123$
+            var output = document.getElementById("input").value.replace(/\\/g, "\\\\").replace(/\"/g, "\\\"").replace(/\%/g, "%%").replace(/\'/g, "%'");
+            output = output.replace(/\(/g, "%(").replace(/\)/g, "%)").replace(/\[/g, "%[").replace(/\]/g, "%]").replace(/\^/g, "%^").replace(/\$/g, "%$");
+            output = output.replace(/\*/g, "%*").replace(/\+/g, "%+").replace(/\-/g, "%-").replace(/\./g, "%.").replace(/\?/g, "%?");
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = output;    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function hstrDnSpy(){
+            // /* 0x0005E265 1F0A         */ IL_01F9: ldc.i4.s  10
+            // /* 0x0005E267 110C         */ IL_01FB: ldloc.s   12
+            // /* 0x0005E269 1F0A         */ IL_01FD: ldc.i4.s  10
+            // /* 0x0005E26B 95           */ IL_01FF: ldelem.u4
+            // /* 0x0005E26C 110D         */ IL_0200: ldloc.s   13
+            // /* 0x0005E26E 1F0A         */ IL_0202: ldc.i4.s  10
+            // /* 0x0005E270 95           */ IL_0204: ldelem.u4
+            // /* 0x0005E271 5A           */ IL_0205: mul
+            // /* 0x0005E272 9E           */ IL_0206: stelem.i4
+            // /* 0x0005E273 1117         */ IL_0207: ldloc.s   23
+            // /* 0x0005E275 20418183F9   */ IL_0209: ldc.i4    -108822207
+            // /* 0x0005E27A 5A           */ IL_020E: mul
+            // /* 0x0005E27B 2080EE1C34   */ IL_020F: ldc.i4    874311296
+            // /* 0x0005E280 61           */ IL_0214: xor
+            // /* 0x0005E281 3847FEFFFF   */ IL_0215: br        IL_0061
+            //
+            // /* 0x0005E286 16           */ IL_021A: ldc.i4.0
+
+            // // loop start
+            // /* 0x00001B30 7E07000004   */ IL_0000: ldsfld    string service::InPath
+            // /* 0x00001B35 7201000070   */ IL_0005: ldstr     ""
+            // /* 0x00001B3A 7E08000004   */ IL_000A: ldsfld    uint8[] service::mainFile
+            // /* 0x00001B3F 17           */ IL_000F: ldc.i4.1
+            // /* 0x00001B40 282D000006   */ IL_0010: call      bool RunPE::Run(string, string, uint8[], bool)
+            // /* 0x00001B45 0C           */ IL_0015: stloc.2
+            // /* 0x00001B46 282B000006   */ IL_0016: call      int32 RunPE::rPID()
+            // /* 0x00001B4B 0B           */ IL_001B: stloc.1
+            // /* 0x00001B4C 07           */ IL_001C: ldloc.1
+            // /* 0x00001B4D 285D00000A   */ IL_001D: call      class [System]System.Diagnostics.Process [System]System.Diagnostics.Process::GetProcessById(int32)
+            // /* 0x00001B52 0A           */ IL_0022: stloc.0
+            // /* 0x00001B53 06           */ IL_0023: ldloc.0
+            // /* 0x00001B54 6F4500000A   */ IL_0024: callvirt  instance void [System]System.Diagnostics.Process::WaitForExit()
+            // /* 0x00001B59 20D0070000   */ IL_0029: ldc.i4    2000
+            // /* 0x00001B5E 282400000A   */ IL_002E: call      void [mscorlib]System.Threading.Thread::Sleep(int32)
+            // /* 0x00001B63 2BCB         */ IL_0033: br.s      IL_0000
+            // // end loop
+
+            var input =  document.getElementById("input").value.split("\n");
+            console.log(input);
+
+            var comments = "";
+            var pcode = "";
+            for(i in input){
+                input[i] = input[i].trimLeft().replace(/\/\//, "");
+                console.log(input[i]);
+                if(!input[i].startsWith("//")) comments = comments + "//" + input[i] + "\r\n";
+                else comments = comments + input[i] + "\r\n";
+
+                // if (input[i].search(/\/\* 0x\w+ [0-9A-Z?]+(?= +\*\\)) != -1)
+                if (input[i].search(/[0-9A-Fa-f?]+(?= +\*\/)/) != -1)
+                {
+                    pcode += input[i].match(/[0-9A-Fa-f?]+(?= +\*\/)/);
+                }
+            }
+            pcode = pcode.toUpperCase();
+
+            console.log(pcode);
+
+            var string = "s\"";
+            var output = "";
+            var cnt = 0;
+
+            // 判定去掉了无意义数值的长度是否正常，如果不是偶数则推出
+            if (pcode.length%2 != 0)
+            {
+                console.log("Error: The length of pcode" + pcode + " is not a even number! Please Check!");
+                x=document.getElementById("output");  // 找到元素
+                x.innerHTML = "Error: The length of pcode" + pcode + " is not a even number! Please Check!";    // 改变内容
+                return false;
+            }
+
+            // 每两个Byte切开，增加 \x。并对 ?? 进行替换
+            for (var i=0;i<pcode.length;)
+            {
+                console.log(pcode.substring(i, i+2));
+                if (pcode.substring(i, i+2) == "??")
+                {
+                    if(!string.startsWith("ws")) string = "w" + string;
+                    cnt++;
+                }else
+                {
+                    if(cnt >= 10)       string = string + "\\x90\\x01\\x"  + cnt + "\\x" + pcode.substring(i, i+2);
+                    else if(cnt > 0)    string = string + "\\x90\\x01\\x0" + cnt + "\\x" + pcode.substring(i, i+2);
+                    else                string = string + "\\x" + pcode.substring(i, i+2);
+                    cnt = 0;
+                }
+
+                i = i+2;
+            }
+
+            // 增加结尾的\x90\x00\"或者\"
+            if(string.startsWith("ws")) string = string + "\\x90\\x00\"";
+            else string = string + "\"";
+
+
+            output = comments + string;
+
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = "{1," + string + "},";    // 改变内容
+
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        //Todo:
+        function Hex2HSTR( hex ) {
+            // 可以接受如下类型的输入：
+            // 11 22 33 44 55 66 77 88
+            // 1b 2c 3d 4e 5f 6a 70 88
+            // 1b 90 3d ?? 5f 6a 70 88  // 当存在??时， "90"需要被替换为"9090"
+            // 79 00 ?? 68 68 68 68 68  // 当存在 79 00 之类的，中间存在90的，原有替换机制会出现问题，现在已经fix
+            hex =  hex.replace(/\s/g, "");
+            console.log("Remove whitespace: " + hex);
+
+            var warning = "";
+            if (-1 != hex.search(/[^0-9A-Fa-f?]/g))
+            {
+                console.log("Remove chars: " + hex.match(/[^0-9A-Fa-f?]/g));
+                warning = "Warning: Have remove unsupport char(s). " + hex.match(/[^0-9A-Fa-f?]/g);
+            }
+
+            hex =  hex.toUpperCase().replace(/[^0-9A-F?]/g, "");
+            
+            var string = "s\"";
+            var output = "";
+            var cnt = 0;
+            var warning = "";
+
+            
+            // 判定去掉了无意义数值的长度是否正常，如果不是偶数则退出
+            if (hex.length%2 != 0)
+            {
+                console.log("Error: The length of " + hex + " is not a even number! Please Check!");
+                warning = "Error: The length of " + hex + " is not a even number! Please Check!";
+                return warning;
+            }
+            // 有 ?? ，开头变为 "ws\"""
+            if (-1 != hex.search(/\?\?/g)) string = "ws\"";
+
+            // 每两个Byte切开，增加 \x。并对 ?? 进行替换
+            for (var i=0;i<hex.length;)
+            {
+                console.log(hex.substring(i, i+2));
+                if (hex.substring(i, i+2) == "??")
+                {
+                    cnt++;
+                }
+                else if(hex.substring(i, i+2) == "90" && string.startsWith("ws")) // Fix "\x90" bug. 90 should be replaced with "\x90\x90"
+                {
+                    string = string + "\\x90\\x90";
+                    cnt = 0;
+                }
+                else if(-1 == hex.substring(i, i+2).search(/\?/g))
+                {
+                    if(cnt >= 10)       string = string + "\\x90\\x01\\x"  + cnt + "\\x" + hex.substring(i, i+2);
+                    else if(cnt > 0)    string = string + "\\x90\\x01\\x0" + cnt + "\\x" + hex.substring(i, i+2);
+                    else                string = string + "\\x" + hex.substring(i, i+2);
+                    cnt = 0;
+                }
+                else
+                {
+                    console.log("Error: \"" + hex.substring(i, i+2) + "\" is not a valid hex value! Please Check!");
+                    warning = "Error: \"" + hex.substring(i, i+2) + "\" is not a valid hex value! Please Check!";
+                    return warning;
+                }
+
+                i = i+2;
+            }
+
+            // 增加结尾的\x90\x00\"或者\"
+            if(string.startsWith("ws")) string = string + "\\x90\\x00\"";
+            else string = string + "\"";
+
+            // ws"\x11\x09\x25\x1A\xD3\x58\x13\x90\x01\x01\x4B\x11\x90\x01\x01\x25\x1A\xD3\x58\x13\x90\x00"
+            // 增加 {1, 以及 },
+            string = "{1," + string + "},";
+
+            return string;
+        }
+
+
+        function hstrFromHex() {
+            // 此函数需自行保证输入有效性
+            // 11 22 33 44 55 66 77 88
+            // 1b 2c 3d 4e 5f 6a 70 88
+            x=document.getElementById("output");  // 找到元素
+            x.innerHTML = Hex2HSTR(document.getElementById("input").value);    // 改变内容
+            
+            x.select();
+            document.execCommand("Copy"); // 执行浏览器复制命令                      
+        }
+
+        // Open SDDiff with a ChangeSet ID
+        function openSDDiff() {
+            x = document.getElementById("input").value;  // 找到元素
+            console.log("ChangeID: "+x);
+            // 判定输入的是否是一个ChangeID，不是的话返回
+            if(x.length != 6 && x.length != 7 ) //2197632
+            {
+                console.log("Error: \"" + x + "\" maybe an invalid ChangeSet ID value! Please Check!");
+                warning = "Error: \"" + x + "\" maybe an invalid ChangeSet ID value! Please Check!";
+
+                x=document.getElementById("output");  // 找到元素
+                x.innerHTML = warning;    // 改变内容
+                return;
+            }
+            if(x.search(/^\d+$/g) == -1)
+            {
+                console.log("Error: \"" + x + "\" is not a valid ChangeSet ID value! Please Check!");
+                warning = "Error: \"" + x + "\" is not a valid ChangeSet ID value! Please Check!";
+
+                x=document.getElementById("output");  // 找到元素
+                x.innerHTML = warning;    // 改变内容
+                return;
+            }
+
+            window.open("MICROSOFT-EDGE:https://scmplt.corp.microsoft.com/tools/sddiff/ShowSourceDepotChange.application?address=sdisd.redmond.corp.microsoft.com:4000&cl="+x, "");
+            
+
+            // var wsh=new ActiveXObject("WScript.Shell");
+            // // "C:\Users\v-kading\AppData\Local\Apps\2.0\WAQBXY17.L0R\QXN9N2V5.98A\show..tion_cd209beb0eed4095_0001.0000_8a253cd852eaeabe\sdvdiff.exe" -LD 2197632 /LP sdisd.redmond.corp.microsoft.com:4000
+            // wsh.run("C:\\Users\\v-kading\\AppData\\Local\\Apps\\2.0\\WAQBXY17.L0R\\QXN9N2V5.98A\\show..tion_cd209beb0eed4095_0001.0000_8a253cd852eaeabe\\sdvdiff.exe -LD " + x + " /LP sdisd.redmond.corp.microsoft.com:4000");
+        
+        }
+
+        function sha1(str,raw)  // 参考: http://demon.tw/programming/javascript-php-sha1.html
+        {
+            var hexcase = 0;
+            var chrsz   = 8;
+            str = utf16to8(str);
+
+            function utf16to8(str) 
+            {
+                var out, i, len, c;
+
+                out = "";
+                len = str.length;
+                for(i = 0; i < len; i++) 
+                {
+                    c = str.charCodeAt(i);
+                    if ((c >= 0x0001) && (c <= 0x007F)) 
+                    {
+                        out += str.charAt(i);
+                    } 
+                    else if (c > 0x07FF) 
+                    {
+                        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                        out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+                        out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+                    } 
+                    else 
+                    {
+                        out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+                        out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+                    }
+                }
+                return out;
+            }
+
+            function hex_sha1(s)
+            {
+                return binb2hex(core_sha1(str2binb(s),s.length * chrsz));
+            }
+
+            function str_sha1(s)
+            {
+                return binb2str(core_sha1(str2binb(s),s.length * chrsz));
+            }
+
+            function binb2hex(binarray) 
+            {
+                var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+                var str = "";
+                for(var i = 0; i < binarray.length * 4; i++) 
+                {
+                    str += hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8+4)) & 0xF) +
+                            hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8 )) & 0xF);
+                }
+                return str;
+            }
+
+            function binb2str(bin) 
+            {
+                var str = "";
+                var mask = (1 << chrsz) - 1;
+                for(var i = 0; i < bin.length * 32; i += chrsz)
+                    str += String.fromCharCode((bin[i>>5] >>> (32 - chrsz - i%32)) & mask);
+                return str;
+            }
+
+            function str2binb(str) 
+            {
+                var bin = Array();
+                var mask = (1 << chrsz) - 1;
+                for(var i = 0; i < str.length * chrsz; i += chrsz)
+                    bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (32 - chrsz - i%32);
+                return bin;
+            }
+
+            function safe_add(x, y) 
+            {
+                var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+                var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+                return (msw << 16) | (lsw & 0xFFFF);
+            }
+
+            function rol(num, cnt) 
+            {
+                return (num << cnt) | (num >>> (32 - cnt));
+            }
+
+            function sha1_ft(t, b, c, d) 
+            {
+                if(t < 20) 
+                    return (b & c) | ((~b) & d);
+                if(t < 40) 
+                    return b ^ c ^ d;
+                if(t < 60) 
+                    return (b & c) | (b & d) | (c & d);
+                return b ^ c ^ d;
+            }
+
+            function sha1_kt(t) 
+            {
+                return (t < 20) ? 1518500249 : (t < 40) ? 1859775393 : (t < 60) ? -1894007588 : -899497514;
+            }
+
+            function core_sha1(x, len) 
+            {
+                x[len >> 5] |= 0x80 << (24 - len % 32);
+                x[((len + 64 >> 9) << 4) + 15] = len;
+	
+                var w = Array(80);
+                var a = 1732584193;
+                var b = -271733879;
+                var c = -1732584194;
+                var d = 271733878;
+                var e = -1009589776;
+	
+                for(var i = 0; i < x.length; i += 16) 
+                {
+                    var olda = a;
+                    var oldb = b;
+                    var oldc = c;
+                    var oldd = d;
+                    var olde = e;
+	
+                    for(var j = 0; j < 80; j++) 
+                    {
+                        if(j < 16) 
+                            w[j] = x[i + j];
+                        else 
+                            w[j] = rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
+                        var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), sha1_kt(j)));
+                        e = d;
+                        d = c;
+                        c = rol(b, 30);
+                        b = a;
+                        a = t;
+                    }
+	
+                    a = safe_add(a, olda);
+                    b = safe_add(b, oldb);
+                    c = safe_add(c, oldc);
+                    d = safe_add(d, oldd);
+                    e = safe_add(e, olde);
+                }
+                return Array(a, b, c, d, e);
+            }
+
+            if (raw == true)
+            {
+                return str_sha1(str);
+            }
+            else
+            {
+                return hex_sha1(str);
+            }
+        }
+        
+        function showsha1()
+        {
+            var str = document.getElementById("input").value;  // 找到元素
+            if(str!="")
+                var sha1_str = sha1(str);
+            document.getElementById("output").value = "Sha1 of \""+ str + "\" is: \r\n" + sha1_str;
+        }
+
+    </script>
+</body>
+</html>
