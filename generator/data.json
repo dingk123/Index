@@ -25,6 +25,18 @@
             "name": "Meduium",
             "disc": "重新认识出版业",
             "img": "medium.webp"
+        },        
+        "NAS": {
+            "url": "https://yara.xyz:89/",
+            "name": "NAS",
+            "disc": "我有一个小NAS，从来都不用",
+            "img": "nas.png"
+        },
+        "路由器": {
+            "url": "http://yara.xyz:90/",
+            "name": "路由器",
+            "disc": "提供DDNS服务的路由器",
+            "img": "router.webp"
         },
         "百度云": {
             "url": "https://pan.baidu.com/",
