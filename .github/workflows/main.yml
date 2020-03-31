@@ -52,5 +52,6 @@ jobs:
         url: ${{ secrets.Dingbot_WeHook }}
         type: markdown
         content: |
-          ## 【GitHubNotice】
+          ### 【GitHubNotice】
           > NAV 编译完成
+          > 请及时测试验证变更
