@@ -35,7 +35,7 @@
         "路由器": {
             "url": "http://yara.xyz:90/",
             "name": "路由器",
-            "disc": "提供DDNS服务的路由器",
+            "disc": "提供上网，DDNS服务",
             "img": "router.webp"
         },
         "百度云": {
