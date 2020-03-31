@@ -134,7 +134,8 @@
         "小众软件": {
             "url": "https://scholar.google.com/",
             "name": "谷歌学术",
-            "disc": ""
+            "disc": "",
+            "img": "google.webp"
         },
         "学术搜索": {
             "url": "http://scholar.chongbuluo.com/",
