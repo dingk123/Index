@@ -56,12 +56,6 @@
             "disc": "全球领先的互联网应用服务提供商",
             "img": "aliyun.webp"
         },
-        "学术搜索": {
-            "url": "http://scholar.chongbuluo.com/",
-            "name": "学术搜索",
-            "disc": "站在巨人的肩膀上",
-            "img": "chong.webp"
-        },
         "快搜": {
             "url": "http://search.chongbuluo.com/",
             "name": "快搜",
@@ -135,6 +129,20 @@
             "disc": "法国隐私且中立的搜索引擎",
             "img": "qwant.webp"
         }
+    },
+    "学术研究": {
+        "小众软件": {
+            "url": "https://scholar.google.com/",
+            "name": "谷歌学术",
+            "disc": "",
+            "img": "appinn.webp"
+        },
+        "学术搜索": {
+            "url": "http://scholar.chongbuluo.com/",
+            "name": "学术搜索",
+            "disc": "站在巨人的肩膀上",
+            "img": "chong.webp"
+        },
     },
     "发现产品": {
         "小众软件": {
