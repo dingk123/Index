@@ -46,18 +46,11 @@ jobs:
       with:
         github_token: ${{ secrets.NAV_TOKEN }}
 
-    - name: Dingtalk Webhook
-      uses: ghostoy/dingtalk-action@v1.0.0
+    - name: dingtalk robot message
+      uses: fifsky/dingtalk-action@master
       with:
-        # dingtalk webhook
-        webhook: ${{ secrets.Dingbot_WeHook }}
-        # dingtalk message type
-        msgtype: markdown # optional, default is text
-        # content for dingtalk message in JSON format
+        url: ${{ secrets.Dingbot_WeHook }}
+        type: markdown
         content: |
-          ## 【GitHub Tips】
-          >NAV Actions run finished. 
-        # at users in JSON format
-        # at: # optional, default is {}
-        # secret used for signing
-        # secret: # optional, default is 
+          ## 【GitHubNotice】
+          > NAV 编译完成
