@@ -45,3 +45,17 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.NAV_TOKEN }}
+
+    - name: Dingtalk Webhook
+      uses: ghostoy/dingtalk-action@v1.0.0
+      with:
+        # dingtalk webhook
+        webhook: ${{ secrets.Dingbot_WeHook }}
+        # dingtalk message type
+        # msgtype: # optional, default is text
+        # content for dingtalk message in JSON format
+        content: "【GitHub】NAV Actions run finished. "
+        # at users in JSON format
+        # at: # optional, default is {}
+        # secret used for signing
+        # secret: # optional, default is 
