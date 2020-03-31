@@ -1,8 +1,10 @@
-### Forked from ivmm/Index(https://github.com/ivmm/Index)
-感谢原作者！！！
+### 感谢
+感谢原作者！！！这个项目Forked from [ivmm/Index](https://github.com/ivmm/Index)
 我用原来这个项目搭了个自己的定制导航页。利用github pages关联到我的域名，可以通过访问自己的私有域名来到这个地址。同时利用GitHub Actions在每次修改收藏的网站后自动编译和部署。
 
-###
+
+
+### 原作者说明
 
 这个项目是为了做一个适合自己的首页，加入了哈尔滨工业大学（深圳）的常用网站，所以也可以作为类似[北邮人导航](byr.wiki)的哈工深版。
 
