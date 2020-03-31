@@ -225,12 +225,6 @@
             "disc": "Google 应用市场",
             "img": "googleplay.webp"
         },
-        "Microsoft Store": {
-            "url": "https://www.microsoft.com/en-us/store/apps/windows",
-            "name": "Microsoft Store",
-            "disc": "微软 UWP 应用商城",
-            "img": "microsoft.webp"
-        },
         "fnd": {
             "url": "https://fnd.io/#/cn/search?mediaType=all&term=",
             "name": "fnd",
