@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.1/ui/misc/PositionPicker/examples/positionPicker.html -->
+    <!-- <base href="//webapi.amap.com/ui/1.1/ui/misc/PositionPicker/examples/" /> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>拖拽选址</title>
+    <link rel="stylesheet" type="text/css" href="./index.css"/>
+      <!-- 重要，请到 https://console.amap.com 申请 JS API 的 key和密钥 -->
+      <script> 
+        window._AMapSecurityConfig = {
+          securityJsCode: '290ddc4b0d33be7bc9b354bc6a4ca614',
+        }
+      </script>
+      
+</head>
+
+<body>
+    <div id="container" class="map" tabindex="0"></div>
+    <div id='right'>
+        <div>
+            <div class='title'>选择模式</div>
+            <input type='radio' name='mode' value='dragMap' checked>拖拽地图模式</input>
+            </br>
+            <input type='radio' name='mode' value='dragMarker'>拖拽Marker模式</input>
+        </div>
+        <div>
+            <button id='start'>开始选点</button>
+            <button id='stop'>关闭选点</button>
+        </div>
+        <div>
+            <div class='title'>选址结果</div>
+            <div class='c'>经纬度:</div>
+            <div id='lnglat'></div>
+            <div class='c'>地址:</div>
+            <div id='address'></div>
+            <div class='c'>最近的路口:</div>
+            <div id='nearestJunction'></div>
+            <div class='c'>最近的路:</div>
+            <div id='nearestRoad'></div>
+            <div class='c'>最近的POI:</div>
+            <div id='nearestPOI'></div>
+        </div>
+    </div>
+    <script type="text/javascript" src='//webapi.amap.com/maps?v=2.0&key=6f025e700cbacbb0bb866712d20bb35c&plugin=AMap.ToolBar'></script>
+    <!-- UI组件库 1.0 -->
+    <script src="//webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script>
+    <script src="./index.js"></script>
+    <script src="../sidebar.js"></script>
+</body>
+
+</html>

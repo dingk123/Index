@@ -1,5 +1,19 @@
 {
     "常用推荐": {
+        "BuildinToolkit": {
+            "url": "https://nav.yara.xyz/pages/tool.html",
+            "name": "导航内置站长工具箱",
+            "disc": "导航内置站长工具箱",
+            "kw": "btk",
+            "img": "favicon.png"
+        },
+        "WebToolkit": {
+            "url": "https://nav.yara.xyz/pages/WebToolkit.html",
+            "name": "WebToolkit",
+            "disc": "用于做字符串加密解密分析的简单网页",
+            "kw": "wtk",
+            "img": "icon_toolbox.png"
+        },
         "wikipedia": {
             "url": "https://www.wikipedia.org/",
             "name": "Wikipedia",
@@ -30,7 +44,7 @@
             "url": "https://yara.xyz:89/",
             "name": "NAS",
             "disc": "我有一个小NAS，从来都不用",
-            "img": "nas.png"
+            "img": "nas.webp"
         },
         "路由器": {
             "url": "http://yara.xyz:90/",
@@ -157,10 +171,10 @@
         }
     },
     "学术研究": {
-        "小众软件": {
+        "谷歌学术": {
             "url": "https://scholar.google.com/",
             "name": "谷歌学术",
-            "disc": "",
+            "disc": "谷歌旗下的学术搜索引擎 ",
             "img": "google.webp"
         },
         "学术搜索": {
@@ -312,6 +326,21 @@
             "name": "奔跑中的奶酪",
             "disc": "有智，有趣，有爱",
             "img": "cheese.webp"
+        }
+    },
+    "我的测试":{
+        "AmapTest": {
+            "url": "https://nav.yara.xyz/pages/little_car/index.html",
+            "name": "高德地图测试",
+            "disc": "用于做高德地图的前端测试",
+            "kw": "gdt",
+            "img": "amap_gaode.ico"
+        },
+        "MailAddressProtection": {
+            "url": "https://nav.yara.xyz/pages/MailProtectDemo1.html",
+            "name": "邮箱地址防护Demo",
+            "disc": "利用backwards做邮箱地址防护",
+            "img": "mail.webp"
         }
     }
 }

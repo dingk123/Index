@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" type="text/css" href="./index.css"/>
+      <!-- 重要，请到 https://console.amap.com 申请 JS API 的 key和密钥 -->
+      <script> 
+        window._AMapSecurityConfig = {
+          securityJsCode: '290ddc4b0d33be7bc9b354bc6a4ca614',
+        }
+      </script>
+      
+    <title>小汽车轨迹加强版</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=6f025e700cbacbb0bb866712d20bb35c&plugin=AMap.PolyEditor"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+</head>
+<body>
+<div id="container"></div>
+
+<div class="input-card" style="width: 300px">
+    <h4>轨迹控制</h4>
+    <div class="input-item">
+        <button class="btn" onclick="startAnimation()" style="margin-bottom: 5px">开始动画</button>
+        <button class="btn" onclick="pauseAnimation()" style="margin-bottom: 5px">暂停动画</button>
+    </div>
+    <div class="input-item">
+        <button class="btn" onclick="resumeAnimation()" style="margin-bottom: 5px">继续动画</button>
+        <button class="btn" onclick="stopAnimation()" style="margin-bottom: 5px">停止动画</button>
+    </div>
+
+    <h4>路线管理</h4>
+    <div class="input-item">
+        <button class="btn" onclick="useDefaultRoute()" style="margin-bottom: 5px">使用默认路线</button>
+        <button class="btn" onclick="polyEditor.open()" style="margin-bottom: 5px">编辑路线</button>
+    </div>
+    <div class="input-item">
+        <button class="btn" onclick="saveRoute()" style="margin-bottom: 5px">保存路线</button>
+        <button class="btn" onclick="polyEditor.close()" style="margin-bottom: 5px">结束编辑</button>
+    </div>
+    <div class="input-item">
+        <button class="btn" onclick="deleteCurrentRoute()" style="margin-bottom: 5px">删除当前路线</button>
+        <button class="btn" onclick="clearAllRoutes()" style="margin-bottom: 5px">清空所有路线</button>
+    </div>
+
+    <div class="input-item">
+        <label>选择路线:</label>
+        <select id="routeSelect" onchange="loadSelectedRoute()" style="width: 100%; margin-bottom: 10px">
+            <option value="default">默认路线</option>
+        </select>
+    </div>
+    <div style="margin-top: 15px; font-size: 12px; color: #666;">
+        <div id="routeStatus">当前使用: 默认路线</div>
+        <div id="routeInfo" style="margin-top: 5px;">路线点数: 0</div>
+    </div>
+</div><!-- UI组件库 1.0 -->
+<script src="//webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script>
+<script src="./index.js"></script>
+<script src="../sidebar.js"></script>
+</body>
+</html>
