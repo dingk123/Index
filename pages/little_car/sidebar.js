@@ -1,13 +1,13 @@
 // 侧边栏导航配置
 const NAVIGATION_CONFIG = [
-    { name: '基础控件', path: '../index.html', folder: '' },
-    { name: '初始化+缩放控件', path: '../初始化+缩放控件/index.html', folder: '初始化+缩放控件' },
-    { name: '各省年收入', path: '../各省年收入/index.html', folder: '各省年收入' },
-    { name: '缩放+图层控件', path: '../缩放+图层控件/index.html', folder: '缩放+图层控件' },
-    { name: '多边形绘制', path: '../多边形绘制/index.html', folder: '多边形绘制' },
-    { name: '拖拽选址', path: '../拖拽选址/index.html', folder: '拖拽选址' },
-    { name: '小汽车轨迹', path: '../小汽车轨迹/index.html', folder: '小汽车轨迹' },
-    { name: '小汽车轨迹加强版', path: '../小汽车轨迹加强版/index.html', folder: '小汽车轨迹加强版' }
+    { name: '基础控件', path: '../little_car/index.html', folder: '' },
+    { name: '初始化+缩放控件', path: '../little_car/初始化+缩放控件/index.html', folder: '初始化+缩放控件' },
+    { name: '各省年收入', path: '../little_car/各省年收入/index.html', folder: '各省年收入' },
+    { name: '缩放+图层控件', path: '../little_car/缩放+图层控件/index.html', folder: '缩放+图层控件' },
+    { name: '多边形绘制', path: '../little_car/多边形绘制/index.html', folder: '多边形绘制' },
+    { name: '拖拽选址', path: '../little_car/拖拽选址/index.html', folder: '拖拽选址' },
+    { name: '小汽车轨迹', path: '../little_car/小汽车轨迹/index.html', folder: '小汽车轨迹' },
+    { name: '小汽车轨迹加强版', path: '../little_car/小汽车轨迹加强版/index.html', folder: '小汽车轨迹加强版' }
 ];
 
 // 获取当前页面路径
