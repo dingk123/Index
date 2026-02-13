@@ -329,6 +329,12 @@
         }
     },
     "我的测试":{
+        "数学小游戏-正方体取出小正方体": {
+            "url": "https://nav.yara.xyz/pages/little_game/正方体取出游戏/index.html",
+            "name": "数学小游戏-正方体取出小正方体",
+            "disc": "一个简单的数学小游戏",
+            "img": "cube_game.png"
+        },
         "AmapTest": {
             "url": "https://nav.yara.xyz/pages/little_car/index.html",
             "name": "高德地图测试",

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正方体取出游戏</title>
+    <link rel="icon" href="../../../assets/images/logos/cube_game.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl@2.0.9/dist/echarts-gl.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .game-title {
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 10px;
+        }
+
+        .game-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-container {
+            display: flex;
+            gap: 30px;
+            height: calc(100vh - 140px);
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .source-area, .target-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .counter {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        .chart-container {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn.reset {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .game-instructions {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .instruction-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <div class="game-title">📦 3D正方体取出游戏</div>
+        <div class="game-description">从左侧3×3×3立方体中点击取出，自动按顺序放置到右侧10×3空地</div>
+    </div>
+
+    <div class="game-container">
+        <div class="source-area">
+            <div class="section-title">🎯 3×3×3 立方体源</div>
+            <div class="counter">剩余: <span id="source-count">27</span> 个</div>
+            
+            <div class="chart-container">
+                <div id="source-chart" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <div class="game-instructions">
+                <div class="instruction-item">🖱️ 点击立方体取出</div>
+                <div class="instruction-item">📦 自动按顺序放置到右侧</div>
+                <div class="instruction-item">🔄 拖拽3D场景360°查看</div>
+                <div class="instruction-item">🏆 取出所有立方体获胜</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-bar" style="width: 0%">0%</div>
+            </div>
+        </div>
+
+        <div class="target-area">
+            <div class="section-title">🏗️ 10×3 存储区域</div>
+            <div class="counter">已放置: <span id="target-count">0</span> / 27 个</div>
+            
+            <div class="chart-container">
+                <div id="target-chart" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn reset" onclick="resetGame()">🔄 重新开始</button>
+                <button class="btn" onclick="undoLastMove()">↶ 撤销</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CubeTakeOutGame {
+            constructor() {
+                this.sourceData = [];
+                this.targetData = [];
+                this.sourceChart = null;
+                this.targetChart = null;
+                this.cubeCounter = 1;
+                this.takeOutHistory = [];
+                this.nextTargetIndex = 0;
+                this.init();
+            }
+
+            init() {
+                this.initializeSourceData();
+                this.initializeTargetData();
+                this.initCharts();
+                this.updateCounters();
+            }
+
+            initializeSourceData() {
+                this.sourceData = [];
+                let cubeId = 1;
+                
+                for (let z = 0; z < 3; z++) {
+                    for (let x = 0; x < 3; x++) {
+                        for (let y = 0; y < 3; y++) {
+                            this.sourceData.push({
+                                x: x,
+                                y: y,
+                                z: z,
+                                id: cubeId++,
+                                color: this.getRandomColor(),
+                                exists: true
+                            });
+                        }
+                    }
+                }
+            }
+
+            initializeTargetData() {
+                this.targetData = [];
+                for (let x = 0; x < 10; x++) {
+                    for (let y = 0; y < 3; y++) {
+                        this.targetData.push({
+                            x: x,
+                            y: y,
+                            z: 0,
+                            id: null,
+                            color: null,
+                            exists: false
+                        });
+                    }
+                }
+            }
+
+            initCharts() {
+                this.sourceChart = echarts.init(document.getElementById('source-chart'));
+                this.updateSourceChart();
+
+                this.targetChart = echarts.init(document.getElementById('target-chart'));
+                this.updateTargetChart();
+
+                this.sourceChart.on('click', (params) => {
+                    if (params.seriesName.startsWith('level') && params.data.itemStyle.opacity > 0) {
+                        this.takeOutCube(params.data.x, params.data.y, params.data.z);
+                    }
+                });
+            }
+
+            generateSourceChartData() {
+                const stackSeries = [];
+                
+                for (let level = 0; level < 3; level++) {
+                    const levelData = [];
+                    
+                    for (let x = 0; x < 3; x++) {
+                        for (let y = 0; y < 3; y++) {
+                            const cube = this.sourceData.find(c => 
+                                c.x === x && c.y === y && c.z === level && c.exists
+                            );
+                            
+                            if (cube) {
+                                // 根据层级设置颜色：底层(0)=橘色，中层(1)=蓝色，顶层(2)=绿色
+                                let layerColor;
+                                if (level === 0) {
+                                    layerColor = '#FF8C00'; // 橘色 - 底层
+                                } else if (level === 1) {
+                                    layerColor = '#4169E1'; // 蓝色 - 中层
+                                } else {
+                                    layerColor = '#32CD32'; // 绿色 - 顶层
+                                }
+                                
+                                levelData.push({
+                                    value: [x, y, 1],
+                                    x: x, y: y, z: level,
+                                    itemStyle: {
+                                        color: layerColor,
+                                        opacity: 0.9,
+                                        borderColor: '#333',
+                                        borderWidth: 2
+                                    },
+                                    label: {
+                                        show: true,
+                                        formatter: cube.id.toString(),
+                                        color: 'white',
+                                        fontWeight: 'bold'
+                                    }
+                                });
+                            } else {
+                                // 不存在的立方体，创建完全透明的占位符
+                                levelData.push({
+                                    value: [x, y, 0],
+                                    x: x, y: y, z: level,
+                                    itemStyle: {
+                                        opacity: 0,
+                                        color: 'transparent'
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    
+                    stackSeries.push({
+                        type: 'bar3D',
+                        name: 'level' + level,
+                        data: levelData,
+                        stack: 'cube',
+                        barSize: [20, 20, 1],
+                        shading: 'lambert'
+                    });
+                }
+                
+                return stackSeries;
+            }
+
+            generateTargetChartData() {
+                const targetSeries = [];
+                
+                const baseData = [];
+                for (let x = 0; x < 10; x++) {
+                    for (let y = 0; y < 3; y++) {
+                        baseData.push([x, y, 0.05]);
+                    }
+                }
+                
+                targetSeries.push({
+                    type: 'bar3D',
+                    name: 'targetBase',
+                    data: baseData,
+                    barSize: [12, 12, 0.2], 
+                    itemStyle: {
+                        color: 'rgba(200, 200, 200, 0.3)',
+                        opacity: 1,
+                        borderColor: '#666',
+                        borderWidth: 1
+                    },
+                    shading: 'color'
+                });
+
+                const placedData = [];
+                this.targetData.forEach(cube => {
+                    if (cube.exists) {
+                        placedData.push({
+                            value: [cube.x, cube.y, 1],
+                            itemStyle: {
+                                color: cube.color,
+                                opacity: 1.0,
+                                borderColor: '#333',
+                                borderWidth: 2
+                            },
+                            label: {
+                                show: true,
+                                formatter: cube.id.toString(),
+                                color: 'white',
+                                fontWeight: 'bold'
+                            }
+                        });
+                    } else {
+                        placedData.push({
+                            value: [cube.x, cube.y, 0],
+                            itemStyle: {
+                                opacity: 0
+                            }
+                        });
+                    }
+                });
+
+                targetSeries.push({
+                    type: 'bar3D',
+                    name: 'placedCubes',
+                    data: placedData,
+                    stack: 'target',
+                    barSize: [12, 12, 0.2],
+                    shading: 'color',
+                    silent: true
+                });
+
+                return targetSeries;
+            }
+
+            updateSourceChart() {
+                const stackSeries = this.generateSourceChartData();
+
+                const option = {
+                    title: {
+                        text: '3×3×3 立方体源',
+                        left: 'center',
+                        top: 10,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 16
+                        }
+                    },
+                    tooltip: {
+                        formatter: (params) => {
+                            if (params.data.itemStyle.opacity > 0) {
+                                return '立方体 #' + (params.label || '?') + '<br/>位置: (' + params.data.x + ', ' + params.data.y + ', ' + params.data.z + ')<br/>点击取出';
+                            }
+                            return '';
+                        }
+                    },
+                    xAxis3D: {
+                        type: 'category',
+                        data: ['0', '1', '2'],
+                        show: false
+                    },
+                    yAxis3D: {
+                        type: 'category', 
+                        data: ['0', '1', '2'],
+                        show: false
+                    },
+                    zAxis3D: {
+                        type: 'value',
+                        min: 0,
+                        max: 3.5,
+                        show: false
+                    },
+                    grid3D: {
+                        boxWidth: 80,
+                        boxHeight: 80,
+                        boxDepth: 80,
+                        show: false,
+                        viewControl: {
+                            alpha: 25,
+                            beta: 30,
+                            rotateSensitivity: 1,
+                            zoomSensitivity: 1,
+                            panSensitivity: 1,
+                            autoRotate: false,
+                            distance: 150
+                        }
+                    },
+                    series: stackSeries
+                };
+
+                this.sourceChart.setOption(option, true);
+                // 强制重新渲染以解决显示问题
+                this.sourceChart.resize();
+                setTimeout(() => {
+                    this.sourceChart.resize();
+                }, 100);
+            }
+
+            updateTargetChart() {
+                const targetSeries = this.generateTargetChartData();
+
+                const option = {
+                    title: {
+                        text: '10×3 存储区域',
+                        left: 'center',
+                        top: 5,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 16
+                        }
+                    },
+                    tooltip: {
+                        formatter: (params) => {
+                            if (params.seriesName === 'placedCubes' && params.data.itemStyle.opacity > 0) {
+                                return '立方体 #' + params.label + '<br/>存储位置: (' + params.data[0] + ', ' + params.data[1] + ')';
+                            }
+                            return '存储位置: (' + params.data[0] + ', ' + params.data[1] + ')<br/>状态: 空闲';
+                        }
+                    },
+                    xAxis3D: {
+                        type: 'category',
+                        data: Array.from({length: 10}, (_, i) => i.toString()),
+                        show: false
+                    },
+                    yAxis3D: {
+                        type: 'category', 
+                        data: ['0', '1', '2'],
+                        show: false
+                    },
+                    zAxis3D: {
+                        type: 'value',
+                        min: 0,
+                        max: 3,
+                        show: false
+                    },
+                    grid3D: {
+                        boxWidth: 200,
+                        boxHeight: 60,
+                        boxDepth: 60,
+                        show: false,
+                        viewControl: {
+                            alpha: 25,
+                            beta: 15,
+                            rotateSensitivity: 1,
+                            zoomSensitivity: 1,
+                            panSensitivity: 1,
+                            autoRotate: false
+                        },
+                    },
+                    series: targetSeries
+                };
+
+                this.targetChart.setOption(option, true);
+            }
+
+            takeOutCube(x, y, z) {
+                const cubeIndex = this.sourceData.findIndex(c => 
+                    c.x === x && c.y === y && c.z === z && c.exists
+                );
+                
+                if (cubeIndex === -1) return;
+                
+                const cube = this.sourceData[cubeIndex];
+                
+                const hasBlockingCube = this.sourceData.some(c => 
+                    c.x === x && c.y === y && c.z > z && c.exists
+                );
+                
+                if (hasBlockingCube) {
+                    alert('🚫 上方还有立方体，请先取出上层的立方体！');
+                    return;
+                }
+
+                cube.exists = false;
+                
+                if (this.nextTargetIndex < 30) {
+                    const targetX = this.nextTargetIndex % 10;
+                    const targetY = Math.floor(this.nextTargetIndex / 10);
+                    
+                    // 根据原始层级确定颜色，保持与左侧一致
+                    let preservedColor;
+                    if (z === 0) {
+                        preservedColor = '#FF8C00'; // 橘色 - 底层
+                    } else if (z === 1) {
+                        preservedColor = '#4169E1'; // 蓝色 - 中层
+                    } else {
+                        preservedColor = '#32CD32'; // 绿色 - 顶层
+                    }
+                    
+                    const targetCube = this.targetData.find(c => c.x === targetX && c.y === targetY);
+                    targetCube.id = cube.id;
+                    targetCube.color = preservedColor;
+                    targetCube.exists = true;
+                    
+                    this.takeOutHistory.push({
+                        sourceIndex: cubeIndex,
+                        targetIndex: this.nextTargetIndex,
+                        cubeData: { ...cube }
+                    });
+                    
+                    this.nextTargetIndex++;
+                }
+
+                // 强制数据更新和重新渲染
+                setTimeout(() => {
+                    this.updateSourceChart();
+                    this.updateTargetChart();
+                    this.updateCounters();
+                    this.checkGameComplete();
+                }, 50);
+            }
+
+            undoLastMove() {
+                if (this.takeOutHistory.length === 0) {
+                    alert('🚫 没有可撤销的操作！');
+                    return;
+                }
+
+                const lastMove = this.takeOutHistory.pop();
+                
+                this.sourceData[lastMove.sourceIndex].exists = true;
+                
+                const targetX = lastMove.targetIndex % 10;
+                const targetY = Math.floor(lastMove.targetIndex / 10);
+                const targetCube = this.targetData.find(c => c.x === targetX && c.y === targetY);
+                targetCube.id = null;
+                targetCube.color = null;
+                targetCube.exists = false;
+                
+                this.nextTargetIndex--;
+                
+                // 强制数据更新和重新渲染
+                setTimeout(() => {
+                    this.updateSourceChart();
+                    this.updateTargetChart();
+                    this.updateCounters();
+                }, 50);
+            }
+
+
+            // 随机颜色生成器
+            // rgb('#FF5733'), rgb('#33FF57'), rgb('#3357FF'), rgb('#F333FF')
+            getRandomColor() {
+                const colors = [
+                    '#FF6B6B', 
+                    // '#4ECDC4', '#45B7D1', '#96CEB4', 
+                    // '#FECA57', '#FF9FF3', '#54A0FF', '#5F27CD',
+                    // '#00D2D3', '#FF9F43', '#10AC84', '#EE5A6F'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            updateCounters() {
+                const remainingCubes = this.sourceData.filter(c => c.exists).length;
+                const placedCubes = this.targetData.filter(c => c.exists).length;
+                
+                document.getElementById('source-count').textContent = remainingCubes;
+                document.getElementById('target-count').textContent = placedCubes;
+                
+                const progress = ((27 - remainingCubes) / 27) * 100;
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = Math.round(progress) + '%';
+            }
+
+            checkGameComplete() {
+                const remainingCubes = this.sourceData.filter(c => c.exists).length;
+                if (remainingCubes === 0) {
+                    setTimeout(() => {
+                        alert('🎉 恭喜！你成功取出了所有立方体！\\n\\n你是真正的拆解大师！');
+                    }, 500);
+                }
+            }
+
+            reset() {
+                this.takeOutHistory = [];
+                this.nextTargetIndex = 0;
+                this.initializeSourceData();
+                this.initializeTargetData();
+                this.updateSourceChart();
+                this.updateTargetChart();
+                this.updateCounters();
+            }
+        }
+
+        let game;
+
+        function initGame() {
+            game = new CubeTakeOutGame();
+        }
+
+        function resetGame() {
+            if (confirm('🤔 确定要重新开始游戏吗？\\n\\n当前进度将会丢失！')) {
+                game.reset();
+            }
+        }
+
+
+        function undoLastMove() {
+            game.undoLastMove();
+        }
+
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
