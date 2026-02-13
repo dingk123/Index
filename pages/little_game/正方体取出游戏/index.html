@@ -214,7 +214,14 @@
                 this.cubeCounter = 1;
                 this.takeOutHistory = [];
                 this.nextTargetIndex = 0;
+                this.isMobile = this.detectMobile();
                 this.init();
+            }
+
+            detectMobile() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                       ('ontouchstart' in window) ||
+                       (navigator.maxTouchPoints > 0);
             }
 
             init() {
@@ -267,11 +274,61 @@
                 this.targetChart = echarts.init(document.getElementById('target-chart'));
                 this.updateTargetChart();
 
+                // 桌面端点击事件
                 this.sourceChart.on('click', (params) => {
                     if (params.seriesName.startsWith('level') && params.data.itemStyle.opacity > 0) {
                         this.takeOutCube(params.data.x, params.data.y, params.data.z);
                     }
                 });
+
+                // 移动端触摸事件支持
+                this.sourceChart.on('mousedown', (params) => {
+                    if (params.seriesName && params.seriesName.startsWith('level') && params.data && params.data.itemStyle && params.data.itemStyle.opacity > 0) {
+                        // 短暂延迟后执行，避免与手势冲突
+                        setTimeout(() => {
+                            this.takeOutCube(params.data.x, params.data.y, params.data.z);
+                        }, 150);
+                    }
+                });
+
+                // 添加触摸开始事件
+                this.sourceChart.on('touchstart', (params) => {
+                    if (params.seriesName && params.seriesName.startsWith('level') && params.data && params.data.itemStyle && params.data.itemStyle.opacity > 0) {
+                        this.takeOutCube(params.data.x, params.data.y, params.data.z);
+                    }
+                });
+
+                // 如果是移动端，添加额外的DOM触摸事件监听
+                if (this.isMobile) {
+                    const chartDom = document.getElementById('source-chart');
+                    let touchStartTime = 0;
+                    
+                    chartDom.addEventListener('touchstart', (e) => {
+                        touchStartTime = Date.now();
+                        e.preventDefault();
+                    }, { passive: false });
+                    
+                    chartDom.addEventListener('touchend', (e) => {
+                        const touchDuration = Date.now() - touchStartTime;
+                        // 短暂点击（非拖拽手势）
+                        if (touchDuration < 200) {
+                            const touch = e.changedTouches[0];
+                            const rect = chartDom.getBoundingClientRect();
+                            const x = touch.clientX - rect.left;
+                            const y = touch.clientY - rect.top;
+                            
+                            // 模拟点击事件
+                            setTimeout(() => {
+                                this.sourceChart.dispatchAction({
+                                    type: 'showTip',
+                                    x: x,
+                                    y: y
+                                });
+                            }, 50);
+                        }
+                        e.preventDefault();
+                    }, { passive: false });
+                }
             }
 
             generateSourceChartData() {
@@ -450,11 +507,15 @@
                         viewControl: {
                             alpha: 25,
                             beta: 30,
-                            rotateSensitivity: 1,
-                            zoomSensitivity: 1,
-                            panSensitivity: 1,
+                            rotateSensitivity: this.isMobile ? 0.5 : 1,
+                            zoomSensitivity: this.isMobile ? 0.5 : 1,
+                            panSensitivity: this.isMobile ? 0.5 : 1,
                             autoRotate: false,
-                            distance: 150
+                            distance: 150,
+                            // 移动端优化
+                            damping: this.isMobile ? 0.9 : 0.8,
+                            minDistance: 50,
+                            maxDistance: 300
                         }
                     },
                     series: stackSeries
